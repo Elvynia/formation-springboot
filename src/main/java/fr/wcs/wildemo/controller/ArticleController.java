@@ -15,50 +15,43 @@ import fr.wcs.wildemo.service.ArticleService;
 
 @Controller
 public class ArticleController {
-	
+
 	@Autowired
 	private ArticleService service;
 
-//	@GetMapping("/")
-//	public ModelAndView index() {
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName("index");
-//		mav.getModelMap().addAttribute("articles", this.service.getAll());
-//		return mav;
-//	}
-	
 	@GetMapping("/")
-	public String index2(Model model) {
+	public String index(Model model) {
 		model.addAttribute("articles", this.service.getAll());
 		return "index";
 	}
-	
+
 	@GetMapping("/create")
 	public String create(Model model) {
 		model.addAttribute("article", new Article());
 		return "form";
 	}
-	
+
 	@PostMapping("/form")
 	public String save(@Valid Article article, BindingResult result) {
 		if (result.hasErrors()) {
 			return "form";
 		} else {
 			if (article.getId() != null) {
-				this.service.update(new Article(article.getId(), article.getTitle(), article.getContent()));
+				this.service.update(new Article(article.getId(),
+						article.getTitle(), article.getContent()));
 			} else {
 				service.create(article.getTitle(), article.getContent());
 			}
 			return "redirect:/";
 		}
 	}
-	
+
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable Integer id) {
 		this.service.delete(id);
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/edit")
 	public String edit(Model model, Integer id) {
 		model.addAttribute("article", this.service.read(id));
