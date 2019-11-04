@@ -42,6 +42,7 @@ public class Account implements UserDetails {
 		this.id = id;
 	}
 
+	@Override
 	public String getUsername() {
 		return username;
 	}
@@ -58,6 +59,7 @@ public class Account implements UserDetails {
 		this.password = password;
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return this.enabled;
 	}
