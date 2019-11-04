@@ -12,7 +12,7 @@
 	<groupId>fr.wcs</groupId>
 	<artifactId>wildemo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>${project.packaging}</packaging>
 	<name>wildemo</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -75,6 +75,30 @@
 			<version>3.4.1</version>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<project.packaging>war</project.packaging>
+			</properties>
+		</profile>
+		<profile>
+			<id>heroku</id>
+			<activation>
+				<property>
+					<name>env.DYNO</name>
+				</property>
+			</activation>
+			<properties>
+				<java.version>1.8</java.version>
+				<project.packaging>jar</project.packaging>
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
