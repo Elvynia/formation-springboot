@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head.html :: head"></head>
+<head>
+<link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+	<nav th:replace="fragments/navbar :: nav"></nav>
+	<div class="container">
+		<h2>Désolé, une erreur technique est survenue, si le problème se
+			reproduit veuillez contacter l'administrateur.</h2>
+	</div>
+</body>
+</html>

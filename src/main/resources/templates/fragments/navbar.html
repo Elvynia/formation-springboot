@@ -20,13 +20,15 @@
 					<a class="nav-link" th:href="@{/create}">Créer un article</a>
 				</li>
 			</ul>
-			<div class="nav-link"
-				th:text="'Auteur : ' + ${#request.userPrincipal.principal.username}"></div>
-			<form th:action="@{/logout}" method="post"
-				class="form-inline my-2 my-lg-0">
-				<button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Se
-					déconnecter</button>
-			</form>
+			<div class="navbar-nav" th:if="${#request.userPrincipal}">
+				<div class="nav-link"
+					th:text="'Auteur : ' + ${#request.userPrincipal.principal.username}"></div>
+				<form th:action="@{/logout}" method="post"
+					class="form-inline my-2 my-lg-0">
+					<button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Se
+						déconnecter</button>
+				</form>
+			</div>
 		</div>
 	</nav>
 </body>
