@@ -1,5 +1,6 @@
 package fr.wcs.wildemo.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import fr.wcs.wildemo.entity.Account;
 import fr.wcs.wildemo.entity.Article;
+import fr.wcs.wildemo.service.AccountService;
 import fr.wcs.wildemo.service.ArticleService;
 
 @Controller
@@ -18,6 +22,9 @@ public class ArticleController {
 
 	@Autowired
 	private ArticleService service;
+
+	@Autowired
+	private AccountService accountService;
 
 	@GetMapping("/")
 	public String index(Model model) {
@@ -40,7 +47,8 @@ public class ArticleController {
 				this.service.update(new Article(article.getId(),
 						article.getTitle(), article.getContent()));
 			} else {
-				service.create(article.getTitle(), article.getContent());
+				this.service.create(article.getTitle(),
+						article.getContent());
 			}
 			return "redirect:/";
 		}
@@ -56,5 +64,13 @@ public class ArticleController {
 	public String edit(Model model, Integer id) {
 		model.addAttribute("article", this.service.read(id));
 		return "form";
+	}
+
+	@GetMapping("/test")
+	@ResponseBody
+	public String test(HttpServletRequest request) {
+		String connectedName = request.getUserPrincipal().getName();
+		Account acc = this.accountService.readByLogin(connectedName);
+		return "ID USER CONNECTED : " + acc.getId();
 	}
 }

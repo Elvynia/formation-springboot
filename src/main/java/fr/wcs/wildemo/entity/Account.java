@@ -15,7 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name="account")
+@Table(name = "account")
 public class Account implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -23,15 +23,15 @@ public class Account implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String username;
-	
+
 	private String password;
-	
+
 	private Boolean enabled;
-	
+
 	@ManyToOne
-	@JoinColumn(name="role_id")
+	@JoinColumn(name = "role_id")
 	private Role role;
 
 	public Integer getId() {
@@ -95,5 +95,5 @@ public class Account implements UserDetails {
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-	
+
 }

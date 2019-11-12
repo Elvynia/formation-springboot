@@ -31,9 +31,9 @@ public class Article implements Serializable {
 	@Size(min = 10, max = 20000)
 	@Lob
 	private String content;
-	
+
 	@ManyToOne
-	@JoinColumn(name="author_id")
+	@JoinColumn(name = "author_id")
 	private Account author;
 
 	public Article() {
@@ -44,7 +44,7 @@ public class Article implements Serializable {
 		this.title = title;
 		this.content = content;
 	}
-	
+
 	public Article(Integer id, String title, String content) {
 		this(title, content);
 		this.id = id;

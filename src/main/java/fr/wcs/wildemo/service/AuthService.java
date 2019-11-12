@@ -15,15 +15,15 @@ public class AuthService implements UserDetailsService {
 
 	@Autowired
 	private AccountRepository repo;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		return this.repo.findOneByUsername(username);
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
 }

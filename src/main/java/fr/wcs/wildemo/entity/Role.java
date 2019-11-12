@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
-@Table(name="role")
+@Table(name = "role")
 public class Role implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;
@@ -17,12 +17,12 @@ public class Role implements GrantedAuthority {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String name;
-	
+
 	public Role() {
 	}
-	
+
 	public Role(Integer id) {
 		this.id = id;
 	}
@@ -47,5 +47,5 @@ public class Role implements GrantedAuthority {
 	public String getAuthority() {
 		return this.name;
 	}
-	
+
 }

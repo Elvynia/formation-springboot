@@ -12,12 +12,13 @@ import fr.wcs.wildemo.repository.AccountRepository;
 
 @Service
 public class AccountService {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
-	
+
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(AccountService.class);
+
 	@Autowired
 	private AccountRepository repo;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
@@ -27,10 +28,18 @@ public class AccountService {
 		account.setPassword(this.encoder.encode(rawPassword));
 		try {
 			account = this.repo.save(account);
-			LOGGER.debug("Nouveau compte créé avec nom d'utilisateur '{}'.", username);
+			AccountService.LOGGER.debug(
+					"Nouveau compte créé avec nom d'utilisateur '{}'.",
+					username);
 		} catch (DataAccessException e) {
-			LOGGER.error("Impossible de créer un nouveau compte utilisateur :", e);
+			AccountService.LOGGER.error(
+					"Impossible de créer un nouveau compte utilisateur :",
+					e);
 		}
 		return account;
+	}
+
+	public Account readByLogin(String login) {
+		return this.repo.findOneByUsername(login);
 	}
 }

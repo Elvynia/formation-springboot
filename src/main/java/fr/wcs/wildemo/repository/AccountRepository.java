@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 import fr.wcs.wildemo.entity.Account;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Integer> {
+public interface AccountRepository
+		extends JpaRepository<Account, Integer> {
 
 	Account findOneByUsername(String username);
 }

@@ -10,7 +10,7 @@ import fr.wcs.wildemo.repository.ArticleRepository;
 
 @Service
 public class ArticleService {
-	
+
 	@Autowired
 	private ArticleRepository repository;
 
@@ -21,11 +21,11 @@ public class ArticleService {
 	public void create(String title, String content) {
 		this.repository.save(new Article(title, content));
 	}
-	
+
 	public Article read(int id) {
 		return this.repository.getOne(id);
 	}
-	
+
 	public void update(Article article) {
 		this.repository.save(article);
 	}
@@ -33,5 +33,5 @@ public class ArticleService {
 	public void delete(int id) {
 		this.repository.deleteById(id);
 	}
-	
+
 }
