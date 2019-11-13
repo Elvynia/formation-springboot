@@ -1,16 +1,20 @@
 package fr.wcs.wildemo.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.wcs.wildemo.entity.Account;
 import fr.wcs.wildemo.entity.Article;
@@ -18,16 +22,52 @@ import fr.wcs.wildemo.service.AccountService;
 import fr.wcs.wildemo.service.ArticleService;
 
 @Controller
+// Défini 'account' en tant qu'attribut du model à conserver pour chaque client/utilisateur séparément.
+@SessionAttributes({ "authorId", "lastArticle" })
+// Pour séparer les attributs en session, il faut une instance de ArticleController pour chaque client/utilisateur.
+@Scope("session")
 public class ArticleController {
 
-	@Autowired
-	private ArticleService service;
-
+	/**
+	 * Accès aux traitements des comptes.
+	 */
 	@Autowired
 	private AccountService accountService;
 
+	/**
+	 * Accès aux traitements des articles.
+	 */
+	@Autowired
+	private ArticleService service;
+
+	/**
+	 * @return Account Renvoie la valeur initiale de l'attribut de session
+	 *         'account'.
+	 */
+	@ModelAttribute("authorId")
+	public Integer account() {
+		return null;
+	}
+
+	@ModelAttribute("lastArticle")
+	public Article testObj() {
+		return null;
+	}
+
 	@GetMapping("/")
-	public String index(Model model) {
+	public String index(Model model,
+			@ModelAttribute("authorId") Integer authorId,
+			Principal principal, HttpSession session) {
+		// Si l'attribut de session est null, il n'existe pas encore.
+		// Il faut lui donner une valeur en cherchant l'id en BDD à
+		// partir de son login.
+		if (authorId == null) {
+			Account readByLogin = this.accountService
+					.readByLogin(principal.getName());
+			// 'authorId' sera rattaché à la session utilisateur et sera disponible
+			// dans toutes les templates utilisées par ce contrôleur.
+			model.addAttribute("authorId", readByLogin.getId());
+		}
 		model.addAttribute("articles", this.service.getAll());
 		return "index";
 	}
@@ -39,17 +79,23 @@ public class ArticleController {
 	}
 
 	@PostMapping("/form")
-	public String save(@Valid Article article, BindingResult result) {
+	public String save(@Valid Article article, BindingResult result,
+			@ModelAttribute("authorId") Integer authorId,
+			@ModelAttribute("lastArticle") Article lastArticle,
+			Model model) {
+		// Récupération des attributs de session 'authorId' et 'lastArticle'.
 		if (result.hasErrors()) {
 			return "form";
 		} else {
+			Article dbArticle;
 			if (article.getId() != null) {
-				this.service.update(new Article(article.getId(),
-						article.getTitle(), article.getContent()));
+				dbArticle = this.service.update(article.getId(),
+						article.getTitle(), article.getContent());
 			} else {
-				this.service.create(article.getTitle(),
-						article.getContent());
+				dbArticle = this.service.create(authorId,
+						article.getTitle(), article.getContent());
 			}
+			model.addAttribute("lastArticle", dbArticle);
 			return "redirect:/";
 		}
 	}
@@ -64,13 +110,5 @@ public class ArticleController {
 	public String edit(Model model, Integer id) {
 		model.addAttribute("article", this.service.read(id));
 		return "form";
-	}
-
-	@GetMapping("/test")
-	@ResponseBody
-	public String test(HttpServletRequest request) {
-		String connectedName = request.getUserPrincipal().getName();
-		Account acc = this.accountService.readByLogin(connectedName);
-		return "ID USER CONNECTED : " + acc.getId();
 	}
 }

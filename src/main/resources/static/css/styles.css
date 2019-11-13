@@ -1,3 +1,14 @@
 .articles {
 	overflow-wrap: break-word;
 }
+
+.article {
+	display: table;
+	margin: auto;
+	margin-top: 30px;
+}
+
+.articles .article small {
+	color: lightgrey;
+	font-size: 1em;
+}

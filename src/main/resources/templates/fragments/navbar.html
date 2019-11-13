@@ -20,9 +20,13 @@
 					<a class="nav-link" th:href="@{/create}">Créer un article</a>
 				</li>
 			</ul>
+			<div class="navbar-nav" th:if="${lastArticle != null}">
+				<a th:text="${lastArticle.title}" th:title="${lastArticle.id}"></a>
+			</div>
+			<div class="navbar-nav" th:if="${lastArticle == null}">No last article</div>
 			<div class="navbar-nav" th:if="${#request.userPrincipal}">
 				<div class="nav-link"
-					th:text="'Auteur : ' + ${#request.userPrincipal.principal.username}"></div>
+					th:text="'Auteur : ' + ${#request.userPrincipal.name}"></div>
 				<form th:action="@{/logout}" method="post"
 					class="form-inline my-2 my-lg-0">
 					<button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Se

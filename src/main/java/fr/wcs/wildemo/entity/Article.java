@@ -34,7 +34,7 @@ public class Article implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "author_id")
-	private Account author;
+	private Account account;
 
 	public Article() {
 	}
@@ -51,7 +51,7 @@ public class Article implements Serializable {
 	}
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
@@ -59,7 +59,7 @@ public class Article implements Serializable {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -67,32 +67,44 @@ public class Article implements Serializable {
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
 	}
 
+	public Account getAccount() {
+		return this.account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + this.id;
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (this.getClass() != obj.getClass()) {
 			return false;
+		}
 		Article other = (Article) obj;
-		if (id != other.id)
+		if (this.id != other.id) {
 			return false;
+		}
 		return true;
 	}
 

@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/public/**", "/webjars/**", "/css/**")
 				.permitAll().anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").permitAll().and().logout()
-				.permitAll();
+				.logoutSuccessUrl("/disconnected").permitAll();
 	}
 
 	@Bean

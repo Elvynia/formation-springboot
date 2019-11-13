@@ -5,13 +5,17 @@
 </head>
 <body>
 	<nav th:replace="fragments/navbar.html :: nav"></nav>
-	<div class="articles">
-		<div th:each="art : ${articles}">
+	<div class="articles container">
+		<div class="article" th:each="art : ${articles}">
 			<h1>
 				<span th:text="${art.title}"></span> <a
 					th:href="@{/delete/} + ${art.id}">X</a> <a
 					th:href="@{/edit?id=} + ${art.id}">E</a>
 			</h1>
+			<small th:if="${art.account != null}">
+				Créé par :
+				<span th:text="${art.account.username}"></span>
+			</small>
 			<p th:text="${art.content}"></p>
 		</div>
 	</div>

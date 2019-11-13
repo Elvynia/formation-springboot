@@ -34,8 +34,15 @@ public class Account implements UserDetails {
 	@JoinColumn(name = "role_id")
 	private Role role;
 
+	public Account() {
+	}
+
+	public Account(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
@@ -44,15 +51,16 @@ public class Account implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	@Override
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
@@ -69,7 +77,7 @@ public class Account implements UserDetails {
 	}
 
 	public Role getRole() {
-		return role;
+		return this.role;
 	}
 
 	public void setRole(Role role) {
