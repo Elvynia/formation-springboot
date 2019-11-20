@@ -1,6 +1,7 @@
 package fr.wcs.wildemo.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "article")
@@ -31,6 +34,9 @@ public class Article implements Serializable {
 	@Size(min = 10, max = 20000)
 	@Lob
 	private String content;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate date;
 
 	@ManyToOne
 	@JoinColumn(name = "author_id")
@@ -80,6 +86,14 @@ public class Article implements Serializable {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public LocalDate getDate() {
+		return this.date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	@Override

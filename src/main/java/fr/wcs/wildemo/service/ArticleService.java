@@ -1,5 +1,6 @@
 package fr.wcs.wildemo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ public class ArticleService {
 		return this.repository.findAll();
 	}
 
-	public Article create(Integer accountId, String title,
-			String content) {
+	public Article create(Integer accountId, String title, String content, LocalDate date) {
 		Article article = new Article(title, content);
+		article.setDate(date);
 		article.setAccount(this.accountRepository.getOne(accountId));
 		return this.repository.save(article);
 	}
@@ -33,10 +34,11 @@ public class ArticleService {
 		return this.repository.getOne(id);
 	}
 
-	public Article update(Integer id, String title, String content) {
+	public Article update(Integer id, String title, String content, LocalDate date) {
 		Article article = this.read(id);
 		article.setTitle(title);
 		article.setContent(content);
+		article.setDate(date);
 		return this.repository.save(article);
 	}
 

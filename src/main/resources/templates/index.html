@@ -13,8 +13,13 @@
 					th:href="@{/edit?id=} + ${art.id}">E</a>
 			</h1>
 			<small th:if="${art.account != null}">
-				Créé par :
+				<span>Créé par : </span>
 				<span th:text="${art.account.username}"></span>
+			</small>
+			<br>
+			<small th:if="${art.date != null}">
+				<span>Le</span> 
+				<span th:text="${art.date}"></span>
 			</small>
 			<p th:text="${art.content}"></p>
 		</div>

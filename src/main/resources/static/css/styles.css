@@ -12,3 +12,7 @@
 	color: lightgrey;
 	font-size: 1em;
 }
+
+small span {
+	color: grey;
+}

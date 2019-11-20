@@ -1,6 +1,7 @@
 package fr.wcs.wildemo.controller;
 
 import java.security.Principal;
+import java.time.ZoneId;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -55,15 +56,13 @@ public class ArticleController {
 	}
 
 	@GetMapping("/")
-	public String index(Model model,
-			@ModelAttribute("authorId") Integer authorId,
-			Principal principal, HttpSession session) {
+	public String index(Model model, @ModelAttribute("authorId") Integer authorId, Principal principal,
+			HttpSession session) {
 		// Si l'attribut de session est null, il n'existe pas encore.
 		// Il faut lui donner une valeur en cherchant l'id en BDD à
 		// partir de son login.
 		if (authorId == null) {
-			Account readByLogin = this.accountService
-					.readByLogin(principal.getName());
+			Account readByLogin = this.accountService.readByLogin(principal.getName());
 			// 'authorId' sera rattaché à la session utilisateur et sera disponible
 			// dans toutes les templates utilisées par ce contrôleur.
 			model.addAttribute("authorId", readByLogin.getId());
@@ -79,21 +78,22 @@ public class ArticleController {
 	}
 
 	@PostMapping("/form")
-	public String save(@Valid Article article, BindingResult result,
-			@ModelAttribute("authorId") Integer authorId,
-			@ModelAttribute("lastArticle") Article lastArticle,
-			Model model) {
+	public String save(@Valid Article article, BindingResult result, @ModelAttribute("authorId") Integer authorId,
+			@ModelAttribute("lastArticle") Article lastArticle, Model model) {
 		// Récupération des attributs de session 'authorId' et 'lastArticle'.
 		if (result.hasErrors()) {
 			return "form";
 		} else {
 			Article dbArticle;
+			System.out.println("DATE:" + article.getDate());
+
+			System.out.println("DATE ZONED:" + article.getDate().atStartOfDay().atZone(ZoneId.of("UTC")).toLocalDate());
+
 			if (article.getId() != null) {
-				dbArticle = this.service.update(article.getId(),
-						article.getTitle(), article.getContent());
+				dbArticle = this.service.update(article.getId(), article.getTitle(), article.getContent(),
+						article.getDate());
 			} else {
-				dbArticle = this.service.create(authorId,
-						article.getTitle(), article.getContent());
+				dbArticle = this.service.create(authorId, article.getTitle(), article.getContent(), article.getDate());
 			}
 			model.addAttribute("lastArticle", dbArticle);
 			return "redirect:/";
